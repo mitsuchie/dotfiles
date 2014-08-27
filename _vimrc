@@ -3,6 +3,10 @@ if has('vim_starting')
   set runtimepath+=~/vimfiles/bundle/neobundle.vim/
 endif
 
+filetype off
+filetype plugin off
+filetype indent off
+  
 " =============================================================================
 " NeoBundle
 " =============================================================================
@@ -26,11 +30,8 @@ NeoBundle 'rhysd/unite-codic.vim'
 NeoBundle 'nathanaelkane/vim-indent-guides'
 call neobundle#end()
 
-filetype on
-filetype indent on
-filetype plugin on
-filetype plugin indent on
 NeoBundleCheck
+
 
 " =============================================================================
 " settings
@@ -47,6 +48,9 @@ set listchars=tab:^\_,trail:~,extends:.
 set autochdir
 set tags=tags;
 set noundofile
+set laststatus=2
+set cmdheight=2
+set showcmd
 
 autocmd QuickFixCmdPost *grep* cwindow
 autocmd guienter * set transparency=245
@@ -259,3 +263,7 @@ endfunction
 let g:indent_guides_enable_on_vim_startup = 1
 
 
+filetype on
+filetype plugin on
+filetype indent on
+syntax on
