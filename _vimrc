@@ -51,6 +51,7 @@ set noundofile
 set laststatus=2
 set cmdheight=2
 set showcmd
+set backspace=indent,eol,start 
 
 autocmd QuickFixCmdPost *grep* cwindow
 autocmd guienter * set transparency=245
