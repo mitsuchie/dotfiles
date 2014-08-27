@@ -23,7 +23,7 @@ NeoBundle 'sgur/unite-everything'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'koron/codic-vim'
 NeoBundle 'rhysd/unite-codic.vim'
-NeoBundle 'nathanaekane/vim-indent-guides'
+NeoBundle 'nathanaelkane/vim-indent-guides'
 call neobundle#end()
 
 filetype on
