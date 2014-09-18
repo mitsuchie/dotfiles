@@ -183,18 +183,17 @@ call quickrun#module#register(shabadou#make_quickrun_hook_anim(
 
 " エラーならquickfix, 成功ならバッファに表示
 let g:quickrun_config = {
-\   "_" : {
-\       "runner" : "vimproc",
-\       "runner/vimproc/updatetime" : 40,
-\       "hook/santi_pinch/enable" : 1,
-\       "hook/santi_pinch/wait" : 30,
-\       "outputter/error/error" : "quickfix",
-\       "outputter/error/success" : "buffer",
-\       "outputter" : "error",
-\       "hook/quickfix_replate_tempname_to_bufnr/enable_exit" : 1,
-\       "hook/quickfix_replate_tempname_to_bufnr/priority_exit" : -10,
-\   },
-\   'cpp/vc': {
+\ "_" : {
+\   "runner" : "vimproc",
+\   "runner/vimproc/updatetime": 60,
+\   "hook/santi_pinch/enable": 1,
+\   "hook/santi_pinch/wait": 30,
+\   "outputter/error/error": "quickfix",
+\   "outputter" : "multi:buffer:error",
+\   "hook/quickfix_replate_tempname_to_bufnr/enable_exit": 1,
+\   "hook/quickfix_replate_tempname_to_bufnr/priority_exit": -10,
+\ },
+\ 'cpp/vc': {
 \   'command': 'cl',
 \   'exec': ['%c %o %s /nologo /Fo%s:p:r.obj /Fe%s:p:r.exe',
 \            '%s:p:r.exe %a'],
