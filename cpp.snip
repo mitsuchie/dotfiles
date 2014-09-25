@@ -14,14 +14,14 @@ options     head
     #include <complex>
     #include <cstdio>
     using namespace std;
-    
+
     #define REP(i,p,n) for(int i=p;i<n;++i)
     #define rep(i,n) REP(i,0,n)
 
     typedef long long int ll;
     typedef pair<int,int> pii;
     typedef complex<double> point;
-    
+
     int main()
     {
         ${0:code}
@@ -156,6 +156,44 @@ options     head
         u32 lhs=0, rhs=32, mid=0;
         while(lhs+1<rhs){ mid=(lhs+rhs)>>1; (x>>mid?lhs:rhs)=mid; }
         return lhs;
+    }
+
+snippet     doubling
+abbr        "ダブリング"
+options     head
+    // int fs[MAXM][MAXN]; // # => f0...fM (f:v->v の写像)
+
+	rep(i,MAXM-1) rep(j,N)
+	{
+		fs[i+1][j] = fs[i][j]==-1 ? -1 : fs[i][fs[i][j]];
+	}
+
+snippet     lca
+abbr        "最近共通先祖"
+options     head
+    // int fs[MAXM][MAXN]; // # => f0...fM (f:v->v の写像)
+
+    int lca(int a,int b,int depth_a,int depth_b)
+    {
+        // 深さを揃える
+        if(depth_a!=depth_b)
+        {
+            const bool ab = depth_a < depth_b;
+            int len = ab ? depth_b-depth_a : depth_a-depth_b;
+            int c   = ab ? b : a;
+            rep(i,MAXM){ if((len>>i)&1){ c = fs[i][c]; } }
+            a = ab ? a : c;
+            b = ab ? c : b;
+        }
+        if( a == b ){ return a; }
+
+        // 二分探索
+        for(int i=MAXM-1;i>=0;--i) if(fs[i][a]!=fs[i][b])
+        {
+            a = fs[i][a];
+            b = fs[i][b];
+        }
+        return fs[0][a];
     }
 
 #--------------------------------------------------------------------
