@@ -86,8 +86,6 @@ autocmd QuickFixCmdPost *grep* cwindow
 " 透明度の設定
 autocmd guienter * set transparency=245
 
-colorscheme hybrid 
-
 if $TERM == "xterm"
   set shell=bash
 endif
@@ -361,3 +359,5 @@ filetype on
 filetype plugin on
 filetype indent on
 syntax on
+
+colorscheme hybrid
