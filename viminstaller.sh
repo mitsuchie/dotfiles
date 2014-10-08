@@ -24,7 +24,7 @@ cd vimbuild \
    && sudo make install
 
 cd ..
-rm -r vimbuild
+sudo rm -r vimbuild
 
 sudo apt-get autoremove
 
