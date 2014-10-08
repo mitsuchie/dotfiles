@@ -1,7 +1,6 @@
 apt-get update -y
 apt-get upgrade -y
-apt-get install git -y
-apt-get install make -y
+apt-get install git make curl -y
 
 # vim
 # apt-get build-dep vim -y
@@ -28,3 +27,6 @@ cd ..
 rm -r vimbuild
 
 apt-get autoremove
+
+curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh | sh
+wget https://raw.githubusercontent.com/mitsuchie/vim/master/_vimrc ~/.vimrc
