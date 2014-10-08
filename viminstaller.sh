@@ -19,7 +19,7 @@ cd vimbuild \
                  --enable-python3interp --enable-rubyinterp \
                  --enable-luainterp --with-luajit \
                  --enable-fail-if-missing \
-                 --enable-xim --enable-multibyte \
+                 --enable-xim --enable-multibyte --enable-fontset \
                  --prefix=/usr/local \
    && sudo make \
    && sudo make install
