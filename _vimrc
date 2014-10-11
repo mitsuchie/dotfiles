@@ -192,12 +192,7 @@ imap <C-Space> <C-X><C-O>
 " neosnippet
 " =============================================================================
 let g:neosnippet#enable_snipmate_compatibility = 1
-
-if has('win32')
-  let g:neosnippet#snippets_directory='C:/vim/snippets/'
-else
-  let g:neosnippet#snippets_directory='~/vimfiles/snippets/'
-endif
+let g:neosnippet#snippets_directory='~/dotfiles/snippets/'
 
 " <C-Space>でスニペットを展開する
 imap <expr><C-Space> neosnippet#expandable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<C-Space>"
