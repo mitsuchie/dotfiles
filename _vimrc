@@ -208,9 +208,16 @@ endif
 " quickrun
 " =============================================================================
 " 実行中は SAN値! ピンチ! する
+function s:iconv_list(l)
+  if has('win32')
+    return map(a:l,"iconv(v:val,'cp932','utf-8')")
+  endif
+  return a:l
+endfunction
+
 call quickrun#module#register(shabadou#make_quickrun_hook_anim(
 \	"santi_pinch",
-\	['＼(・ω・＼)　SAN値！', '　(／・ω・)／ピンチ！',],
+\	s:iconv_list(['＼(・ω・＼)　SAN値！', '　(／・ω・)／ピンチ！',]),
 \	24,
 \), 1)
 
