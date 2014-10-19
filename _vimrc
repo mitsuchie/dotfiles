@@ -63,6 +63,7 @@ NeoBundle 'tyru/open-browser.vim'   " ブラウザオープン
 " NeoBundle 'ekalinin/Dockerfile.vim' " docker
 call neobundle#end()
 
+filetype plugin indent on
 NeoBundleCheck
 
 " =============================================================================
@@ -104,9 +105,7 @@ if $TERM == "xterm"
   set shell=bash
 endif
 
-if !has('gui_running')
-  set t_Co=256
-end
+set t_Co=256
 
 " カラースキーム
 let g:hybrid_use_Xresources = 1
@@ -293,8 +292,8 @@ au FileType unite nnoremap <silent> <buffer> <expr> <C-l> unite#do_action('vspli
 au FileType unite inoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
 au FileType unite nnoremap <silent> <buffer> <expr> <C-o> unite#do_action('tabopen')
 au FileType unite inoremap <silent> <buffer> <expr> <C-o> unite#do_action('tabopen')
-" au FileType unite nnoremap <silent> <buffer> <ESC><ESC> :q<CR>
-" au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
+au FileType unite nnoremap <silent> <buffer> <ESC><ESC> :q<CR>
+au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
 
 " grepはthe platium searcherを使う（速い！） (必須) pt.exe
 if executable('pt')
@@ -343,16 +342,16 @@ endfunction
 " =============================================================================
 " previm
 " =============================================================================
-" augroup PrevimSettings
-"   autocmd!
-"   autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
-" augroup END
+augroup PrevimSettings
+  autocmd!
+  autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+augroup END
 
 " Previm
-" let g:previm_open_cmd = ''
-" nnoremap [previm] <Nop>
-" nnoremap <silent> <F7> :<C-u>PrevimOpen<CR>
-" nnoremap <silent> <F5> :call previm#refresh()<CR>
+let g:previm_open_cmd = ''
+nnoremap [previm] <Nop>
+nnoremap <silent> <F7> :<C-u>PrevimOpen<CR>
+nnoremap <silent> <F5> :call previm#refresh()<CR>
 
 " =============================================================================
 " paste mode
