@@ -2,7 +2,7 @@
 # template
 #-------------------------------------------------------------------------------
 snippet     template_library
-abbr        "‹£‹ZƒvƒƒOƒ‰ƒ~ƒ“ƒO—p‚Ìƒeƒ“ƒvƒŒ[ƒg"
+abbr        "ç«¶æŠ€ãƒ—ãƒ­ã‚°ãƒ©ãƒŸãƒ³ã‚°ç”¨ã®ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ"
 options     head
     #include <iostream>
     #include <vector>
@@ -24,6 +24,7 @@ options     head
 
     typedef long long int ll;
     typedef complex<double> point;
+    typedef pair<int,int> pii;
     typedef vector<int> vint;
     typedef vector<pii> vpii;
     typedef pair<int,int> pii;
@@ -32,7 +33,7 @@ options     head
 
     int main()
     {
-        ${0:code}
+        ${1:code}
 
         return 0;
     }
@@ -41,7 +42,7 @@ options     head
 # structure
 #-------------------------------------------------------------------------------
 snippet     edge
-abbr        "ƒOƒ‰ƒt‚Ì•Ó‚Ì\‘¢‘Ì"
+abbr        "ã‚°ãƒ©ãƒ•ã®è¾ºã®æ§‹é€ ä½“"
 alias       Edge
 options     head
     struct Edge
@@ -57,24 +58,24 @@ options     head
     };
 
 snippet     UnionFind
-abbr        "Union-Find(ƒOƒ‹[ƒvŠÇ—)"
+abbr        "Union-Find(ã‚°ãƒ«ãƒ¼ãƒ—ç®¡ç†)"
 alias       unionfind
 alias       union-find
 options     head
     struct UnionFind
     {
         vector<int> uf;
-        // e‚È‚µ(-1)‚Å‰Šú‰»‚µ‚Ä‚¨‚­
+        // è¦ªãªã—(-1)ã§åˆæœŸåŒ–ã—ã¦ãŠã
         void init(int n){ uf.assign(n,-1); }
-        // e‚ª‚¢‚È‚¢‚È‚ç©•ª‚ğ•Ô‚·, e‚ª‚¢‚½‚çŒo˜Hˆ³k‚µ‚Ä•Ô‚·(root’¼‰º‚ÉŒq‚®)
+        // è¦ªãŒã„ãªã„ãªã‚‰è‡ªåˆ†ã‚’è¿”ã™, è¦ªãŒã„ãŸã‚‰çµŒè·¯åœ§ç¸®ã—ã¦è¿”ã™(rootç›´ä¸‹ã«ç¹‹ã)
         int find(int x){ return uf[x]<0 ? x : (uf[x]=this->find(uf[x])); }
-        // Œq‚°‚æ‚¤‚Æ‚·‚é(union/—\–ñŒã‚È‚ñ‚Å‚·‚æ‚Ë,‚±‚ê‚ª)
+        // ç¹‹ã’ã‚ˆã†ã¨ã™ã‚‹(union/äºˆç´„å¾Œãªã‚“ã§ã™ã‚ˆã­,ã“ã‚ŒãŒ)
         bool connect(int a,int b)
         {
-            a = this->find(a); // a‚Ìƒ‹[ƒgƒm[ƒh
-            b = this->find(b); // b‚Ìƒ‹[ƒgƒm[ƒh
-            if(a!=b){ uf[b]=a; return true; } // V‚µ‚­‚Â‚È‚°‚½
-            return false; // ‚à‚¤‚Â‚È‚ª‚Á‚Ä‚é
+            a = this->find(a); // aã®ãƒ«ãƒ¼ãƒˆãƒãƒ¼ãƒ‰
+            b = this->find(b); // bã®ãƒ«ãƒ¼ãƒˆãƒãƒ¼ãƒ‰
+            if(a!=b){ uf[b]=a; return true; } // æ–°ã—ãã¤ãªã’ãŸ
+            return false; // ã‚‚ã†ã¤ãªãŒã£ã¦ã‚‹
         }
 
     } uf;
@@ -88,14 +89,14 @@ options     head
     __gcd(${1},${2})${0}
 
 snippet     dijkstra2
-abbr        "Šg’£ƒ_ƒCƒNƒXƒgƒ‰–@"
+abbr        "æ‹¡å¼µãƒ€ã‚¤ã‚¯ã‚¹ãƒˆãƒ©æ³•"
 alias       dk2
 options     head
-    const int MAXN=64;   // ’¸“_”
-    const int MAXC=1024; // Šg’£”
-    const ll INF=1<<30;  // Å‘å”
-    ll dist[MAXN][MAXC]; // ‹——£
-    vector<pii> G[MAXN]; // ƒOƒ‰ƒt
+    const int MAXN=64;   // é ‚ç‚¹æ•°
+    const int MAXC=1024; // æ‹¡å¼µæ•°
+    const ll INF=1<<30;  // æœ€å¤§æ•°
+    ll dist[MAXN][MAXC]; // è·é›¢
+    vector<pii> G[MAXN]; // ã‚°ãƒ©ãƒ•
 
     ll dijkstra2(int s,int t,int c)
     {
@@ -103,7 +104,7 @@ options     head
         dist[s][c]=0;
 
         priority_queue< pii > Q;
-        Q.push(make_pair(c,s)); // Šg’£”‚ğÅ‘å‚É‚·‚é(‹t‚È‚ç•„†”½“])
+        Q.push(make_pair(c,s)); // æ‹¡å¼µæ•°ã‚’æœ€å¤§ã«ã™ã‚‹(é€†ãªã‚‰ç¬¦å·åè»¢)
 
         while(!Q.empty())
         {
@@ -113,14 +114,14 @@ options     head
 
             rep(i,G[pp].size())
             {
-                // ’Êí
+                // é€šå¸¸æ™‚
                 {
                     const int tt = G[pp][i].first;
                     const ll  ww = dist[pp][cc]+ll(G[pp][i].second);
                     if(ww<dist[tt][cc]){ dist[tt][cc]=ww; Q.push(pii(cc,tt)); }
                 }
 
-                if(cc>0) // Šg’£
+                if(cc>0) // æ‹¡å¼µæ™‚
                 {
                     const int tt = G[pp][i].first;
                     const ll  ww = dist[pp][cc]-ll(G[pp][i].second);
@@ -130,18 +131,18 @@ options     head
         }
 
         ll res=INF;
-        rep(i,c+1){ res=min(res,dist[t][i]); } // Šg’£‚³‚ê‚½’†‚ÅÅ¬‚ğ’Šo
+        rep(i,c+1){ res=min(res,dist[t][i]); } // æ‹¡å¼µã•ã‚ŒãŸä¸­ã§æœ€å°ã‚’æŠ½å‡º
         return res;
     }
     
 snippet     dijkstra
-abbr        "ƒ_ƒCƒNƒXƒgƒ‰–@"
+abbr        "ãƒ€ã‚¤ã‚¯ã‚¹ãƒˆãƒ©æ³•"
 alias       dk1
 options     head
-    const int MAXN=64;  // ’¸“_”
-    const ll INF=1<<30; // Å‘å”
-    ll dist[MAXN];      // ‹——£
-    vector<pii> G[MAXN]; // ƒOƒ‰ƒt
+    const int MAXN=64;  // é ‚ç‚¹æ•°
+    const ll INF=1<<30; // æœ€å¤§æ•°
+    ll dist[MAXN];      // è·é›¢
+    vector<pii> G[MAXN]; // ã‚°ãƒ©ãƒ•
     struct GI { bool operator()(int a,int b){ return dist[a]<dist[b]; } }; // smaller
 
     ll dijkstra(int s,int t)
@@ -167,7 +168,7 @@ options     head
     }
 
 snippet     pow
-abbr        "ŒJ‚è•Ô‚µ“ñæ•û"
+abbr        "ç¹°ã‚Šè¿”ã—äºŒä¹—æ–¹"
 options     head
     ll pow(ll x,ll n)
     {
@@ -178,7 +179,7 @@ options     head
     }${0}
 
 snippet     ncr
-abbr        "‘g‚İ‡‚í‚¹‚Ì”"
+abbr        "çµ„ã¿åˆã‚ã›ã®æ•°"
 options     head
     ll ncr(ll n,ll r)
     {
@@ -189,7 +190,7 @@ options     head
     }${0}
 
 snippet     ncr_with_mod
-abbr        "‘g‚İ‡‚í‚¹‚Ì” ƒtƒFƒ‹ƒ}[‚Ì¬’è—"
+abbr        "çµ„ã¿åˆã‚ã›ã®æ•° ãƒ•ã‚§ãƒ«ãƒãƒ¼ã®å°å®šç†"
 options     head
     ll ncr(ll n,ll r)
     {
@@ -201,7 +202,7 @@ options     head
     }${0}
 
 snippet     msb
-abbr        "ÅãˆÊƒrƒbƒg"
+abbr        "æœ€ä¸Šä½ãƒ“ãƒƒãƒˆ"
 options     head
     u32 msb(u32 x)
     {
@@ -211,9 +212,9 @@ options     head
     }
 
 snippet     doubling
-abbr        "ƒ_ƒuƒŠƒ“ƒO"
+abbr        "ãƒ€ãƒ–ãƒªãƒ³ã‚°"
 options     head
-    // int fs[MAXM][MAXN]; // # => f0...fM (f:v->v ‚ÌÊ‘œ)
+    // int fs[MAXM][MAXN]; // # => f0...fM (f:v->v ã®å†™åƒ)
 
 	rep(i,MAXM-1) rep(j,N)
 	{
@@ -221,13 +222,13 @@ options     head
 	}
 
 snippet     lca
-abbr        "Å‹ß‹¤’Êæ‘c"
+abbr        "æœ€è¿‘å…±é€šå…ˆç¥–"
 options     head
-    // int fs[MAXM][MAXN]; // # => f0...fM (f:v->v ‚ÌÊ‘œ)
+    // int fs[MAXM][MAXN]; // # => f0...fM (f:v->v ã®å†™åƒ)
 
     int lca(int a,int b,int depth_a,int depth_b)
     {
-        // [‚³‚ğ‘µ‚¦‚é
+        // æ·±ã•ã‚’æƒãˆã‚‹
         if(depth_a!=depth_b)
         {
             const bool ab = depth_a < depth_b;
@@ -239,7 +240,7 @@ options     head
         }
         if( a == b ){ return a; }
 
-        // ƒ_ƒuƒŠƒ“ƒO
+        // ãƒ€ãƒ–ãƒªãƒ³ã‚°
         for(int i=MAXM-1;i>=0;--i) if(fs[i][a]!=fs[i][b])
         {
             a = fs[i][a];
@@ -249,7 +250,7 @@ options     head
     }
 
 snippet     kruscal
-abbr        ƒNƒ‰ƒXƒJƒ‹–@
+abbr        ã‚¯ãƒ©ã‚¹ã‚«ãƒ«æ³•
 alias       minimum-spanning-tree
 options     head
     ll kruscal(int n,vector<Edge>& edges) // need (unionfind, edge)
@@ -259,11 +260,11 @@ options     head
         sort(edges.begin(), edges.end());
         uf.init(n);
 
-        rep(i,edges.size()) // Še•Ó‚É’–Ú‚·‚é(ƒRƒXƒg‚Ì¬‚³‚¢‡)
+        rep(i,edges.size()) // å„è¾ºã«æ³¨ç›®ã™ã‚‹(ã‚³ã‚¹ãƒˆã®å°ã•ã„é †)
         {
             if(uf.connect(edges[i].from, edges[i].to))
             {
-                res+=edges[i].cost; // ˜AŒ‹¬•ª‚Å‚È‚¯‚ê‚Î•Ó‚ğŒ‹‚Ô
+                res+=edges[i].cost; // é€£çµæˆåˆ†ã§ãªã‘ã‚Œã°è¾ºã‚’çµã¶
             }
         }
 
@@ -271,21 +272,21 @@ options     head
     }
 
 snippet     prim
-abbr        "ƒvƒŠƒ€–@"
+abbr        "ãƒ—ãƒªãƒ æ³•"
 options     head
     ll prim(det2& det) // need (edge)
     {
         int left = det.size()-1;
 
         vector<int> v(det.size(),0);
-        v[0] = 1; // ŠJn’¸“_
+        v[0] = 1; // é–‹å§‹é ‚ç‚¹
 
-        // ƒRƒXƒg‚Åƒ\[ƒg‚³‚ê‚éƒLƒ…[‚ğg‚¤ [cost,to]
+        // ã‚³ã‚¹ãƒˆã§ã‚½ãƒ¼ãƒˆã•ã‚Œã‚‹ã‚­ãƒ¥ãƒ¼ã‚’ä½¿ã† [cost,to]
         priority_queue<pii,vector<pii>,greater<pii> > Q;
         for(auto e:det[0]){ Q.push(e); }
 
         ll res = 0;
-        while(!Q.empty() && left) // ‘S’¸“_‚É“’B‚Å‚«‚é‚Ü‚Å‘±‚¯‚é
+        while(!Q.empty() && left) // å…¨é ‚ç‚¹ã«åˆ°é”ã§ãã‚‹ã¾ã§ç¶šã‘ã‚‹
         {
             const int cost = Q.top().first;
             const int to   = Q.top().second;
@@ -296,7 +297,7 @@ options     head
 
             if(left==0){ break; }
 
-            // ’–Ú‚µ‚Ä‚¢‚é’¸“_‚©‚ço‚Ä‚¢‚é•Ó‚Å‰ñ‚·(“’BÏ‚İ‚Íœ‚­)
+            // æ³¨ç›®ã—ã¦ã„ã‚‹é ‚ç‚¹ã‹ã‚‰å‡ºã¦ã„ã‚‹è¾ºã§å›ã™(åˆ°é”æ¸ˆã¿ã¯é™¤ã)
             for(auto e:det[to]){ if(!v[e.second]){ Q.push(e); } }
         }
 
@@ -312,7 +313,7 @@ options     head
     //------------------------------------------------------------------------------
 
 snippet     size
-abbr        size() Š‡ŒÊ•âŠ®
+abbr        size() æ‹¬å¼§è£œå®Œ
 options     head
     size()
 
