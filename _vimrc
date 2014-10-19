@@ -14,11 +14,6 @@ if has('vim_starting')
   endif
 endif
 
-if has('vim_starting')
-  set nocompatible
-  set runtimepath+=~/vimfiles/bundle/neobundle.vim/
-endif
-
 filetype off
 filetype plugin off
 filetype indent off
