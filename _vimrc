@@ -38,7 +38,7 @@ if !has('win32')
 \       'unix'    : 'make -f make_unix.mak',
 \   },
 \  }
-end
+endif
 NeoBundle 'w0ng/vim-hybrid'         " カラースキーム
 NeoBundle 'Shougo/unite.vim'        " 検索インタフェース
 NeoBundle 'Shougo/neomru.vim'       " 履歴
