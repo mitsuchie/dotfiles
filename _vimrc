@@ -39,20 +39,19 @@ if !has('win32')
 \   },
 \  }
 end
-NeoBundle 'chriskempson/tomorrow-theme' " カラースキーム
 NeoBundle 'w0ng/vim-hybrid'         " カラースキーム
 NeoBundle 'Shougo/unite.vim'        " 検索インタフェース
 NeoBundle 'Shougo/neomru.vim'       " 履歴
 NeoBundle 'Shougo/neocomplete.vim'  " 補完
 NeoBundle 'Shougo/neosnippet.vim'   " スニペット補完
 NeoBundle 'Shougo/neosnippet-snippets' " スニペット集
+NeoBundle 'Shougo/unite-outline'    " コード中のクラスの概要
 NeoBundle 'itchyny/lightline.vim'   " 綺麗なステータスライン
+NeoBundle 'thinca/vim-ref'          " クイックリファレンス閲覧
 NeoBundle 'thinca/vim-quickrun'     " バッファのコードを実行
 NeoBundle 'osyo-manga/shabadou.vim' " QuickRunの拡張
-NeoBundle 'thinca/vim-ref'          " クイックリファレンス閲覧
-NeoBundle 'Shougo/unite-outline'    " コード中のクラスの概要
-NeoBundle 'sgur/unite-everything'   " デスクトップ検索
 NeoBundle 'osyo-manga/vim-watchdogs' " 静的コード解析(非同期)
+NeoBundle 'sgur/unite-everything'   " デスクトップ検索
 NeoBundle 'dannyob/quickfixstatus'  " quickfixをコマンドウィンドウに表示
 NeoBundle 'KazuakiM/vim-qfsigns'    " quickfixをsign領域に表示
 NeoBundle 'koron/codic-vim'         " 英和辞書(補完にも使う)
@@ -60,7 +59,6 @@ NeoBundle 'rhysd/unite-codic.vim'   " uniteで英和辞書を使う
 NeoBundle 'tpope/vim-rails'         " rails
 NeoBundle 'kannokanno/previm'       " プレビュー
 NeoBundle 'tyru/open-browser.vim'   " ブラウザオープン
-
 " NeoBundle 'scrooloose/syntastic'    " 静的コード解析
 " NeoBundle 'ekalinin/Dockerfile.vim' " docker
 call neobundle#end()
@@ -137,7 +135,6 @@ nnoremap { gT
 " タグ関係
 nnoremap t <C-t>
 
-
 " =============================================================================
 " neocomplete
 " =============================================================================
@@ -182,7 +179,6 @@ endif
 imap <Nul> <C-x><C-o>
 imap <C-Space> <C-X><C-O>
 
-
 " =============================================================================
 " neosnippet
 " =============================================================================
@@ -197,7 +193,6 @@ imap <expr><Space>   neosnippet#jumpable()   ? "\<Plug>(neosnippet_expand_or_jum
 if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
-
 
 " =============================================================================
 " quickrun
@@ -222,6 +217,7 @@ let g:quickrun_config = {
 \    "runner": "vimproc",
 \    "runner/vimproc/updatetime": 40,
 \    "hook/santi_pinch/enable": 1,
+\    "hook/time/enable": 1,
 \    "outputter": "multi:buffer:quickfix",
 \    "hook/quickfix_replate_tempname_to_bufnr/enable_exit": 1,
 \    "hook/quickfix_replate_tempname_to_bufnr/priority_exit": -10,
@@ -245,12 +241,8 @@ let g:quickrun_config = {
 \    'hook/qfsigns_update/enable_exit':   1,
 \    'hook/qfsigns_update/priority_exit': 3,
 \  },
-\  "ruby/watchdogs_checker" : {
-\    "type" : "watchdogs_checker/rubocop"
-\  },
-\  "cpp/watchdogs_checker" : {
-\    "type" : "watchdogs_checker/msvc"
-\  },
+\  "ruby/watchdogs_checker" : { "type" : "watchdogs_checker/rubocop" },
+\  "cpp/watchdogs_checker"  : { "type" : "watchdogs_checker/msvc"    },
 \}
 
 " VC++をデフォルトにしておく
@@ -260,7 +252,6 @@ endif
 
 " <C-c>でQuickRunの強制終了
 nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"
-
 
 " =============================================================================
 " watchdogs
@@ -277,19 +268,8 @@ execute 'sign define '.get(g:qfsigns#Config,'name').' texthl=Error text=>>'
 " =============================================================================
 let g:ref_refe_encoding = "UTF-8"
 " + でカーソル下の単語のリファレンスを開く
-nmap <silent> <unique> + <Plug>(ref-keyword)
-vmap <silent> <unique> + <Plug>(ref-keyword)
-
-" web検索
-let g:ref_source_webdict_sites = {
-\   'google':       { 'url': 'http://google.co.jp/search?q=%s' },
-\   'wikipedia_ja': { 'url': 'http://ja.wikipedia.org/wiki/%s' },
-\ }
-
-" 出力に対するフィルタ。最初の数行を削除している。
-function! g:ref_source_webdict_sites.wikipedia_ja.filter(output)
-  return join(split(a:output, "\n")[18 :], "\n")
-endfunction
+nmap <silent> + <Plug>(ref-keyword)
+vmap <silent> + <Plug>(ref-keyword)
 
 " =============================================================================
 " unite
@@ -313,8 +293,8 @@ au FileType unite nnoremap <silent> <buffer> <expr> <C-l> unite#do_action('vspli
 au FileType unite inoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
 au FileType unite nnoremap <silent> <buffer> <expr> <C-o> unite#do_action('tabopen')
 au FileType unite inoremap <silent> <buffer> <expr> <C-o> unite#do_action('tabopen')
-au FileType unite nnoremap <silent> <buffer> <ESC><ESC> :q<CR>
-au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
+" au FileType unite nnoremap <silent> <buffer> <ESC><ESC> :q<CR>
+" au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
 
 " grepはthe platium searcherを使う（速い！） (必須) pt.exe
 if executable('pt')
@@ -325,14 +305,6 @@ if executable('pt')
 endif
 
 set grepprg=pt\ --nogroup
-
-
-" =============================================================================
-" syntasitc
-" =============================================================================
-" 保存の度にrubyのコーディングスタイルが正しいかチェックする
-" let g:syntastic_ruby_checkers = ['rubocop']
-
 
 " =============================================================================
 " codic
@@ -371,16 +343,16 @@ endfunction
 " =============================================================================
 " previm
 " =============================================================================
-augroup PrevimSettings
-    autocmd!
-    autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
-augroup END
+" augroup PrevimSettings
+"   autocmd!
+"   autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+" augroup END
 
 " Previm
-let g:previm_open_cmd = ''
-nnoremap [previm] <Nop>
-nnoremap <silent> <F7> :<C-u>PrevimOpen<CR>
-nnoremap <silent> <F5> :call previm#refresh()<CR>
+" let g:previm_open_cmd = ''
+" nnoremap [previm] <Nop>
+" nnoremap <silent> <F7> :<C-u>PrevimOpen<CR>
+" nnoremap <silent> <F5> :call previm#refresh()<CR>
 
 " =============================================================================
 " paste mode
@@ -407,4 +379,3 @@ filetype on
 filetype plugin on
 filetype indent on
 syntax on
-
