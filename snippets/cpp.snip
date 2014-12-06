@@ -23,11 +23,8 @@ options     head
     #define rep(i,n) REP(i,0,n)
 
     typedef long long int ll;
-    typedef complex<double> point;
     typedef pair<int,int> pii;
     typedef vector<int> vint;
-    typedef vector<pii> vpii;
-    typedef pair<int,int> pii;
     typedef vector<vint> det1;
     typedef vector<vpii> det2;
 
@@ -36,6 +33,31 @@ options     head
         ${1:code}
 
         return 0;
+    }
+
+snippet     template_library_for_geometry
+abbr        "競技プログラミング幾何ライブラリ"
+options     head
+    typedef complex<double> Point;
+    typedef Point P; // 省略記法
+
+    const double cEPS = 1e-6;
+    const double cINF = 1e+9;
+
+    double dot(const Point& a,const Point& b)
+    {
+        return (a.real() * b.real() + a.imag() * b.imag());
+    }
+
+    double cross(const Point& a,const Point& b)
+    {
+        return (a.real() * b.imag() - a.imag() * b.real());
+    }
+
+    bool is_intersected_ls(const Point& a1,const Point& a2,const Point& b1,const Point& b2)
+    {
+        return (cross(a2-a1,b1-a1) * cross(a2-a1,b2-a1))<cEPS &&
+               (cross(b2-b1,a1-b1) * cross(b2-b1,a2-b1))<cEPS;
     }
 
 #-------------------------------------------------------------------------------
@@ -88,8 +110,23 @@ abbr        "__gcd (gcc extend)"
 options     head
     __gcd(${1},${2})${0}
 
+snippet     warshall_floyd
+abbr        "ワーシャルフロイト法 O(n^3)
+options     head
+    const int MAXN=64;
+    ll costs[MAXN][MAXN];
+
+    void warshall_floyd(int n)
+    {
+        rep(k,n) rep(i,n) rep(j,n)
+        {
+            costs[i][j] = min(costs[i][j], costs[i][k]+dist[k][j]);
+        }
+    }
+
+
 snippet     dijkstra2
-abbr        "拡張ダイクストラ法"
+abbr        "拡張ダイクストラ法 O((n+v)logv)"
 alias       dk2
 options     head
     const int MAXN=64;   // 頂点数
@@ -136,35 +173,40 @@ options     head
     }
     
 snippet     dijkstra
-abbr        "ダイクストラ法"
+abbr        "ダイクストラ法 O((n+v)logv)"
 alias       dk1
 options     head
     const int MAXN=64;  // 頂点数
     const ll INF=1<<30; // 最大数
-    ll dist[MAXN];      // 距離
-    vector<pii> G[MAXN]; // グラフ
-    struct GI { bool operator()(int a,int b){ return dist[a]<dist[b]; } }; // smaller
+    ll  costs[MAXN];    // コスト(距離)
+    int backs[MAXN];    // 経路復元
+    vector<pair<int,ll> > G[MAXN]; // 隣接リスト[from,to,cost]
 
-    ll dijkstra(int s,int t)
+    ll dijkstra(int start,int goal)
     {
-        rep(i,MAXN){ dist[i]=INF; }
-        dist[s] = 0;
+        rep(i,MAXN){ costs[i]=INF; } // INFが返ってきたらstart-goal経路がない
+        costs[start] = 0;
 
+        struct GI { bool operator()(int a,int b){ return costs[a]<costs[b]; } };
+
+        // 未処理頂点キュー
         priority_queue<int,vector<int>,GI> Q;
-        Q.push(s);
+        Q.push(start);
 
         while(!Q.empty())
         {
-            const int ss = Q.top(); Q.pop();
+            const int now = Q.top();
+            Q.pop();
 
-            rep(i,G[ss].size())
+            rep(i,G[now].size())
             {
-                const int tt = G[ss][i].first;
-                const ll  ww = dist[ss]+ll(G[ss][i].second);
-                if(ww<dist[tt]){ dist[tt]=ww; Q.push(tt); }
+                const int to   = G[now][i].first;
+                const ll  cost = costs[now] + G[now][i].second;
+
+                if(cost<costs[to]){ costs[to]=cost; backs[to]=now; Q.push(to); }
             }
         }
-        return dist[t];
+        return costs[goal];
     }
 
 snippet     pow
@@ -201,8 +243,9 @@ options     head
         return ((x%mod)*y)%mod;
     }${0}
 
-snippet     msb
+snippet     most_significant_bit
 abbr        "最上位ビット"
+alias       msb
 options     head
     u32 msb(u32 x)
     {
@@ -212,7 +255,7 @@ options     head
     }
 
 snippet     doubling
-abbr        "ダブリング"
+abbr        "ダブリング (lca等に活用)"
 options     head
     // int fs[MAXM][MAXN]; // # => f0...fM (f:v->v の写像)
 
@@ -221,8 +264,9 @@ options     head
 		fs[i+1][j] = fs[i][j]==-1 ? -1 : fs[i][fs[i][j]];
 	}
 
-snippet     lca
+snippet     lowest_common_ancestor
 abbr        "最近共通先祖"
+alias       lca
 options     head
     // int fs[MAXM][MAXN]; // # => f0...fM (f:v->v の写像)
 
@@ -250,7 +294,7 @@ options     head
     }
 
 snippet     kruscal
-abbr        クラスカル法
+abbr        "クラスカル法"
 alias       minimum-spanning-tree
 options     head
     ll kruscal(int n,vector<Edge>& edges) // need (unionfind, edge)
@@ -312,16 +356,25 @@ abbr        "commentout line"
 options     head
     //------------------------------------------------------------------------------
 
+snippet     line_equal
+abbr        "commentout line"
+options     head
+    //==============================================================================
+
 snippet     size
 abbr        size() 括弧補完
 options     head
-    size()
+    size()${0}
 
 snippet     sort
 abbr        sort(x.begin(), x.end())
 options     head
-    sort(${1}.begin(), $1.end());${0}
+    sort(${1}.begin(), $1.end())${0}
 
+snippet     find
+abbr        count(arr.begin(),arr.end(),x)
+options     head
+    count(${1}.begin(),$1.end(),${2})${0}
 
 #-------------------------------------------------------------------------------
 snippet     singleton
@@ -359,7 +412,8 @@ options     head
     namespace ${1:name}
     {
         ${0:code}
-    };
+
+    }; // namespace $1
 
 #-------------------------------------------------------------------------------
 snippet     class
@@ -367,32 +421,11 @@ abbr        "class"
 options     head
     //==============================================================================
     //
-    // Class: $1
+    // Class:  ${1:classname}
     // Author: ${2:username}
     //
     //==============================================================================
-    class ${1:name}
-    {
-    public:
-        explicit $1();
-        virtual ~$1();
-
-        ${0:code}
-    };
-    $1::$1(){}
-    $1::~$1(){}
-
-#-------------------------------------------------------------------------------
-snippet     class_devired
-abbr        "class inherited others"
-options     head
-    //==============================================================================
-    //
-    // Class: $1
-    // Author: ${2:username}
-    //
-    //==============================================================================
-    class ${1:name}
+    class $1
     {
     public:
         explicit $1();

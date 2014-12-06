@@ -1,23 +1,17 @@
-scriptencoding utf-8
 set encoding=utf-8
-set fileencoding=utf-8                                 " 基本文字コード
-set fileencodings=utf-8,iso-2022-jp,cp932,sjis,euc-jp  " 文字コード自動判別(優先順)
-set fileformat=unix           " 基本ファイルフォーマット
-set fileformats=unix,mac,dos  " ファイルフォーマット自動判別(優先順)
+scriptencoding utf-8
+set fileencoding=utf-8
+set fileencodings=utf-8,cp932,iso-2022-jp,sjis,euc-jp
+set fileformat=unix
+set fileformats=unix,dos,mac
 
 if has('vim_starting')
-  set nocompatible
   if has('win32')
     set runtimepath+=~/vimfiles/bundle/neobundle.vim/
   else
     set runtimepath+=~/.vim/bundle/neobundle.vim/
   endif
 endif
-
-filetype off
-filetype plugin off
-filetype indent off
-syntax off
 
 " =============================================================================
 " NeoBundle
@@ -59,6 +53,7 @@ NeoBundle 'rhysd/unite-codic.vim'   " uniteで英和辞書を使う
 NeoBundle 'tpope/vim-rails'         " rails
 NeoBundle 'kannokanno/previm'       " プレビュー
 NeoBundle 'tyru/open-browser.vim'   " ブラウザオープン
+NeoBundle 'tpope/vim-surround'      " テキストオブジェクト
 " NeoBundle 'scrooloose/syntastic'    " 静的コード解析
 " NeoBundle 'ekalinin/Dockerfile.vim' " docker
 call neobundle#end()
@@ -197,7 +192,7 @@ endif
 " quickrun
 " =============================================================================
 " 実行中は SAN値! ピンチ! する
-function s:iconv_list(l)
+function! s:iconv_list(l)
   if has('win32')
     return map(a:l,"iconv(v:val,'cp932','utf-8')")
   endif
@@ -205,52 +200,52 @@ function s:iconv_list(l)
 endfunction
 
 call quickrun#module#register(shabadou#make_quickrun_hook_anim(
-\	"santi_pinch",
+\	'santi_pinch',
 \	s:iconv_list(['＼(・ω・＼)　SAN値！', '　(／・ω・)／ピンチ！',]),
-\	24,
+\	6,
 \), 1)
 
 " エラーならquickfix, 成功ならバッファに表示
 let g:quickrun_config = {
-\  "_" : {
-\    "runner": "vimproc",
-\    "runner/vimproc/updatetime": 40,
-\    "hook/santi_pinch/enable": 1,
-\    "hook/time/enable": 1,
-\    "outputter": "multi:buffer:quickfix",
-\    "hook/quickfix_replate_tempname_to_bufnr/enable_exit": 1,
-\    "hook/quickfix_replate_tempname_to_bufnr/priority_exit": -10,
-\    "hook/close_quickfix/enable_success": 1,
-\    "hook/close_quickfix/enable_hook_loaded": 1,
+\  '_' : {
+\    'runner': 'vimproc',
+\    'runner/vimproc/updatetime': 40,
+\    'hook/santi_pinch/enable': 1,
+\    'hook/time/enable': 1,
+\    'outputter': 'multi:buffer:quickfix',
+\    'hook/quickfix_replate_tempname_to_bufnr/enable_exit': 1,
+\    'hook/quickfix_replate_tempname_to_bufnr/priority_exit': -10,
+\    'hook/close_quickfix/enable_success': 1,
+\    'hook/close_quickfix/enable_hook_loaded': 1,
 \  },
 \  'cpp/vc': {
-\    'command': 'cl.bat',
-\    'exec': ['%c %o %s /nologo /Fo%s:p:r.obj /Fe%s:p:r.exe',
-\            '%s:p:r.exe %a'],
+\    'exec': ['cl.bat %o %S /Fo%S:P:R.obj /Fe%S:P:R.exe > nul',
+\             '%S:P:R.exe %a'],
 \    'tempfile': '%{tempname()}.cpp',
-\    'hook/sweep/files': ['%S:p:r.exe', '%S:p:r.obj'],
+\    'hook/sweep/files': ['%S:P:R.exe', '%S:P:R.obj'],
+\    'hook/output_encode/encoding': 'cp932'
 \  },
-\  "msbuild" : {
-\    "command": "search_and_msbuild.bat",
-\    "exec": "%c %o %s:p:r",
-\    "cmdopt": "",
-\  },
+\  'watchdogs_checker/vc' : {
+\    'command'   : 'cl.bat',
+\    'exec'      : '%c /Zs %o %s:p ',
+\    'hook/output_encode/encoding': 'cp932'
+\	},
 \  'watchdogs_checker/_' : {
 \    'outputter/quickfix/open_cmd' : '',
 \    'hook/qfsigns_update/enable_exit':   1,
 \    'hook/qfsigns_update/priority_exit': 3,
 \  },
-\  "ruby/watchdogs_checker" : { "type" : "watchdogs_checker/rubocop" },
-\  "cpp/watchdogs_checker"  : { "type" : "watchdogs_checker/msvc"    },
+\  'ruby/watchdogs_checker' : { 'type' : 'watchdogs_checker/rubocop' },
+\  'cpp/watchdogs_checker'  : { 'type' : 'watchdogs_checker/vc' },
 \}
 
 " VC++をデフォルトにしておく
 if has('win32')
-  let g:quickrun_config.cpp = { "type": "cpp/vc" }
+  let g:quickrun_config.cpp = { 'type': 'cpp/vc' }
 endif
 
 " <C-c>でQuickRunの強制終了
-nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"
+nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() : '\<C-c>'
 
 " =============================================================================
 " watchdogs
@@ -273,8 +268,8 @@ vmap <silent> + <Plug>(ref-keyword)
 " =============================================================================
 " unite
 " =============================================================================
-let g:unite_enable_start_insert = 1        " 最初からinsertモードにしておく
-let g:unite_source_history_yank_enable = 1 " ヤンク履歴とか使えるようにする
+let g:unite_enable_start_insert = 1         " 最初からinsertモードにしておく
+let g:unite_source_history_yank_enable = 1  " ヤンク履歴とか使えるようにする
 let g:unite_source_history_yank_limit = 100 " 履歴の最大を設定
 
 " , にショートカットを割り振っておく
@@ -283,9 +278,13 @@ nnoremap <silent> ,a  :<C-u>Unite everything/async -buffer-name=everything<CR>
 " 最近開いたファイルとかその他諸々(かなり高速)
 nnoremap <silent> ,f :<C-u>Unite buffer file_mru file -buffer-name=searcher<CR>
 " ヤンク(コピー履歴)
-nnoremap <silent> ,z :<C-u>Unite history/yank -buffer-name=history/yank<CR>
+nnoremap <silent> ,y :<C-u>Unite history/yank -buffer-name=history/yank<CR>
 " grep結果, :Unite grep:(パス)
 nnoremap <silent> ,g :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
+" outline結果, :Unite outline
+nnoremap <silent> ,r :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
+" ファイル
+nnoremap <silent> ,z :<C-u>Unite file -buffer-name=filer<CR>
 
 " <C-l>でウィンドウ分割して開く, <C-o>でタブで開く
 au FileType unite nnoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
