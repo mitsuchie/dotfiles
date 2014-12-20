@@ -1,0 +1,6 @@
+[user]
+	email = fsakura01@gmail.com
+	name = mitsuchie
+	editor = vim
+[push]
+	default = matching
