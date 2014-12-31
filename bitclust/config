@@ -1,0 +1,11 @@
+---
+:database_prefix: C:/Users/chie/.bitclust/db
+:encoding: utf-8
+:versions:
+- 2.0.0
+:default_version: 2.0.0
+:stdlibtree: C:/Users/chie/.bitclust/rubydoc/refm/api/src
+:capi_src: C:/Users/chie/.bitclust/rubydoc/refm/capi/src/
+:baseurl: http://localhost:10080
+:port: '10080'
+:pid_file: /tmp/bitclust.pid
