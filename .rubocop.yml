@@ -1,0 +1,5 @@
+AsciiComments:
+  Enabled: false
+
+SpaceInsideBlockBraces:
+  Enabled: false
